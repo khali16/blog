@@ -5,7 +5,7 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import axios from "axios";
 
-axios.interceptors.request.use(
+var myInterceptor = axios.interceptors.request.use(
   (request) => {
     console.log(request);
     return request;
@@ -16,8 +16,9 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+axios.interceptors.request.eject(myInterceptor);
 
-axios.interceptors.response.use(
+var mySecondInterceptor = axios.interceptors.response.use(
   (response) => {
     console.log(response);
     return response;
@@ -28,6 +29,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+axios.interceptors.response.eject(mySecondInterceptor);
 
 ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
