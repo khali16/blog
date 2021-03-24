@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import "./NewPost.css";
 
@@ -8,6 +9,7 @@ class NewPost extends Component {
     title: "",
     content: "",
     author: "Max",
+    submitted: false,
   };
 
   postDataHandler = () => {
@@ -18,12 +20,19 @@ class NewPost extends Component {
     };
     axios.post("/posts", data).then((response) => {
       console.log(response);
+      this.props.history.push("/posts"); //pierwszy sposób na przekierowanie na inną stronę, a niżej drugi, jest jeszcze: this.props.history.replace - które powoduje, że jak wciśniemy cofajkę to i tak wylądujemy - w tym przypadku - na głównej stronie, więc replace = redirect, wyjątkiem jest właśnie push
+      // this.setState({ submitted: true });
     });
   };
 
   render() {
+    let redirect = null;
+    if (this.state.submitted) {
+      redirect = <Redirect to="/posts" />;
+    }
     return (
       <div className="NewPost">
+        {redirect}
         <h1>Add a Post</h1>
         <label>Title</label>
         <input
